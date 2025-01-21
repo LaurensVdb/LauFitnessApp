@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="LauFitnessApp.MainPage"
+             xmlns:viewmodels="clr-namespace:LauFitnessApp.ViewModels"
+             x:DataType="viewmodels:MainViewModel"
+             xmlns:models="clr-namespace:LauFitnessApp.Models"
+             Title="Lau Fitness">
+
+    <Grid RowDefinitions="auto,auto,*" ColumnDefinitions="*"  Margin="15" RowSpacing="10">
+        
+        <HorizontalStackLayout Grid.Row="0" Spacing="5" HorizontalOptions="Center">
+
+            <Button Text="&#xf0ae; Exercises" FontFamily="FontAwesome" Command="{Binding ManageExercisesCommand}"></Button>
+            <Button Text="&#xf44b; Workout" FontFamily="FontAwesome" Command="{Binding StartWorkoutCommand}"></Button>
+            <Button Text="&#xf080; Progress" FontFamily="FontAwesome" Command="{Binding ManageExercisesCommand}"></Button>
+
+          
+        </HorizontalStackLayout>
+        <Label Grid.Row="1" Text="Activities" FontSize="24" FontAttributes="Bold"/>
+        <ScrollView Grid.Row="2" VerticalOptions="FillAndExpand">
+            <CollectionView ItemsSource="{Binding Workouts}" SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate  x:DataType="models:WorkoutDTO">
+                        <VerticalStackLayout Padding="10">
+                            <Border StrokeShape="RoundRectangle 10,10,10,10" Margin="5">
+                                <VerticalStackLayout Padding="10">
+                                    <Label Text="{Binding WorkoutName}" FontSize="18" FontAttributes="Bold" />
+                                    <Label Text="{Binding Date, StringFormat='Date: {0:dd-MM-yyyy}'}" FontSize="14" TextColor="Gray" />
+                                    <Label Text="{Binding Time, StringFormat='Time: {0:hh\\:mm}'}" FontSize="14" TextColor="Gray" />
+                                </VerticalStackLayout>
+                            </Border>
+                        </VerticalStackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </ScrollView>
+
+    </Grid>
+</ContentPage>

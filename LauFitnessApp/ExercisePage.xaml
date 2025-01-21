@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="LauFitnessApp.ExercisePage"
+             Title="Manage exercises"
+            xmlns:viewmodels="clr-namespace:LauFitnessApp.ViewModels"
+            xmlns:models="clr-namespace:LauFitnessApp.Models"
+            x:DataType="viewmodels:ExerciseViewModel"
+            xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+            xmlns:sf="clr-namespace:Syncfusion.Maui.Toolkit.TextInputLayout;assembly=Syncfusion.Maui.Toolkit">
+    <VerticalStackLayout Margin="10">
+        <toolkit:Expander>
+            <toolkit:Expander.Header>
+                <Label Text="Add exercise (tap me)"
+                       FontAttributes="Bold"
+                       FontSize="Medium"/>
+            </toolkit:Expander.Header>
+            <VerticalStackLayout Spacing="10">
+
+            
+                <sf:SfTextInputLayout Hint="Name" >
+                    <Entry Text="{Binding Exercise.Name}" />
+                </sf:SfTextInputLayout>
+
+                <sf:SfTextInputLayout Hint="Bodypart" >
+                    <Entry Text="{Binding Exercise.Bodypart}" />
+                </sf:SfTextInputLayout>
+
+
+               
+                <Button  Text="Add"
+                        Command="{Binding AddCommand}"></Button>
+            </VerticalStackLayout>
+        </toolkit:Expander>
+        <Label Text="Your exercises"
+               FontAttributes="Bold"
+               FontSize="Medium"/>
+
+        <CollectionView  ItemsSource="{Binding Exercises}"
+                HeightRequest="400" >
+            <CollectionView.ItemTemplate >
+                <DataTemplate  x:DataType="models:ExerciseDTO">
+                    <VerticalStackLayout Padding="10">
+
+
+                        <Border StrokeShape="RoundRectangle 10,10,10,10">
+                        <HorizontalStackLayout  Padding="15" Spacing="15"  BackgroundColor="WhiteSmoke">
+                              
+
+                                <Button Text="&#xf068;" FontFamily="FontAwesome"
+                              Command="{Binding DeleteCommand, Source={RelativeSource AncestorType={x:Type viewmodels:ExerciseViewModel}}, x:DataType=viewmodels:ExerciseViewModel}" 
+                              CommandParameter="{Binding .}"></Button>          
+                            <Label Text="{Binding Name}"></Label>
+                            <Label Text="{Binding Bodypart}"></Label>
+                     </HorizontalStackLayout>
+                    </Border>
+                    </VerticalStackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </VerticalStackLayout>
+</ContentPage>
