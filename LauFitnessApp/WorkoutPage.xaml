@@ -9,82 +9,86 @@
              x:DataType="viewmodels:WorkoutViewModel"
              xmlns:models="clr-namespace:LauFitnessApp.Models">
 
-    <Grid RowDefinitions="auto,*,auto" >
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="{OnIdiom Desktop=auto,Phone=*}"/>
-        </Grid.ColumnDefinitions>
-        
-        <Grid.HorizontalOptions>
-         
-            <OnIdiom x:TypeArguments="LayoutOptions">
-                <OnIdiom.Desktop>
-                    Center
-                </OnIdiom.Desktop>
-                <OnIdiom.Phone>
-                    FillAndExpand
-                </OnIdiom.Phone>
+    <Grid>
+        <ScrollView>
+            <Grid RowDefinitions="auto,*,auto" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="{OnIdiom Desktop=auto,Phone=*}"/>
+                </Grid.ColumnDefinitions>
 
-            </OnIdiom>
-        </Grid.HorizontalOptions>
+                <Grid.HorizontalOptions>
 
-        <Grid Grid.Row="0" RowDefinitions="auto,auto,auto, *"  Margin="15" RowSpacing="10" ColumnSpacing="10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="{OnIdiom Desktop=400,Phone=auto}"/>
-                <ColumnDefinition Width="{OnIdiom Desktop=400,Phone=auto}"/>
-                <ColumnDefinition Width="{OnIdiom Desktop=auto,Phone=*}"/>
-            </Grid.ColumnDefinitions>
+                    <OnIdiom x:TypeArguments="LayoutOptions">
+                        <OnIdiom.Desktop>
+                            Center
+                        </OnIdiom.Desktop>
+                        <OnIdiom.Phone>
+                            FillAndExpand
+                        </OnIdiom.Phone>
 
-            <VerticalStackLayout Grid.Row="0" Grid.ColumnSpan="3" >
-                <Label Text="Workout Name" FontAttributes="Bold"/>
-                <Entry Text="{Binding SelectedWorkout.WorkoutName}" Placeholder="Enter workout name" />
-            </VerticalStackLayout>
-            <VerticalStackLayout Grid.Row="1" Grid.Column="0">
-                <Label Grid.Column="0" Text="Date" FontAttributes="Bold"/>
-                <DatePicker Date="{Binding SelectedWorkout.Date}"/>
-            </VerticalStackLayout>
-            <VerticalStackLayout Grid.Row="1" Grid.Column="1">
-                <Label Text="Time" FontAttributes="Bold"/>
-                <TimePicker  Time="{Binding SelectedWorkout.Time}" />
-            </VerticalStackLayout>
-            <VerticalStackLayout Grid.Row="2" Grid.Column="0">
-                <Label Text="Exercise"  FontAttributes="Bold"/>
-                <Picker ItemsSource="{Binding Exercises}"  ItemDisplayBinding="{Binding Name}"  SelectedItem="{Binding SelectedWorkoutSet.Exercise}"></Picker>
+                    </OnIdiom>
+                </Grid.HorizontalOptions>
 
-            </VerticalStackLayout>
-            <VerticalStackLayout Grid.Row="2" Grid.Column="1">
-                <Label Text="Reps"  FontAttributes="Bold"/>
-                <Entry Text="{Binding SelectedWorkoutSet.Reps}" Placeholder="Repetitions" Keyboard="Numeric" />
+                <Grid Grid.Row="0" RowDefinitions="auto,auto,auto, *"  Margin="15" RowSpacing="10" ColumnSpacing="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="{OnIdiom Desktop=400,Phone=auto}"/>
+                        <ColumnDefinition Width="{OnIdiom Desktop=400,Phone=auto}"/>
+                        <ColumnDefinition Width="{OnIdiom Desktop=auto,Phone=*}"/>
+                    </Grid.ColumnDefinitions>
 
-            </VerticalStackLayout>
-            <VerticalStackLayout Grid.Row="2" Grid.Column="2">
-                <Label Text="Weight"  FontAttributes="Bold"/>
-                <Entry Text="{Binding SelectedWorkoutSet.Weight}" Keyboard="Numeric" />
+                    <VerticalStackLayout Grid.Row="0" Grid.ColumnSpan="3" >
+                        <Label Text="Workout Name" FontAttributes="Bold"/>
+                        <Entry Text="{Binding SelectedWorkout.WorkoutName}" Placeholder="Enter workout name" />
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Row="1" Grid.Column="0">
+                        <Label Grid.Column="0" Text="Date" FontAttributes="Bold"/>
+                        <DatePicker Date="{Binding SelectedWorkout.Date}"/>
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Row="1" Grid.Column="1">
+                        <Label Text="Time" FontAttributes="Bold"/>
+                        <TimePicker  Time="{Binding SelectedWorkout.Time}" />
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Row="2" Grid.Column="0">
+                        <Label Text="Exercise"  FontAttributes="Bold"/>
+                        <Picker ItemsSource="{Binding Exercises}"  ItemDisplayBinding="{Binding Name}"  SelectedItem="{Binding SelectedWorkoutSet.Exercise}"></Picker>
 
-            </VerticalStackLayout>
-            <Button Grid.Row="3" Grid.ColumnSpan="3" Text="Add Set" Command="{Binding AddWorkoutSetCommand}" />
-        </Grid>
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Row="2" Grid.Column="1">
+                        <Label Text="Reps"  FontAttributes="Bold"/>
+                        <Entry Text="{Binding SelectedWorkoutSet.Reps}" Placeholder="Repetitions" Keyboard="Numeric" />
 
-        <ScrollView Grid.Row="1" Margin="15">
-            <StackLayout  Spacing="10">
-                <Label Text="Workout Sets" FontAttributes="Bold" />
-                <CollectionView  SelectionMode="None" Margin="0,0,0,10" ItemsSource="{Binding WorkoutSets}">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate  x:DataType="models:WorkoutSetDTO">
-                            <StackLayout Orientation="Horizontal" Spacing="10">
-                                <Button Text="&#xf068;" FontFamily="FontAwesome"   
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Row="2" Grid.Column="2">
+                        <Label Text="Weight"  FontAttributes="Bold"/>
+                        <Entry Text="{Binding SelectedWorkoutSet.Weight}" Keyboard="Numeric" />
+
+                    </VerticalStackLayout>
+                    <Button Grid.Row="3" Grid.ColumnSpan="3" Text="Add Set" Command="{Binding AddWorkoutSetCommand}" />
+                </Grid>
+
+                <ScrollView Grid.Row="1" Margin="15">
+                    <StackLayout  Spacing="10">
+                        <Label Text="Workout Sets" FontAttributes="Bold" />
+                        <CollectionView  SelectionMode="None" Margin="0,0,0,10" ItemsSource="{Binding WorkoutSets}">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate  x:DataType="models:WorkoutSetDTO">
+                                    <StackLayout Orientation="Horizontal" Spacing="10">
+                                        <Button Text="&#xf068;" FontFamily="FontAwesome"   
                                         Command="{Binding DeleteWorkoutSetCommand, Source={RelativeSource AncestorType={x:Type viewmodels:WorkoutViewModel}}, x:DataType=viewmodels:WorkoutViewModel}" 
                                         CommandParameter="{Binding .}" />
-                                <Label Text="{Binding Reps}" />
-                                <Label Text="{Binding Weight}" />
-                                <Label Text="{Binding Exercise.Name}" />
-                            </StackLayout>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
+                                        <Label Text="{Binding Reps}" />
+                                        <Label Text="{Binding Weight}" />
+                                        <Label Text="{Binding Exercise.Name}" />
+                                    </StackLayout>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
 
-                </CollectionView>
-            </StackLayout>
+                        </CollectionView>
+                    </StackLayout>
 
+                </ScrollView>
+                <Button Grid.Row="2" Text="End your workout" Command="{Binding SaveWorkoutCommand}" />
+            </Grid>
         </ScrollView>
-        <Button Grid.Row="2" Text="End your workout" Command="{Binding SaveWorkoutCommand}" />
     </Grid>
 </ContentPage>

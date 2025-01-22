@@ -4,7 +4,9 @@ using CommunityToolkit.Mvvm.Input;
 using DataAcces.Entities;
 using DataAcces.Repositories;
 using LauFitnessApp.Models;
+using LauFitnessApp.Validators;
 using System.Collections.ObjectModel;
+using System.Text;
 
 namespace LauFitnessApp.ViewModels
 {
@@ -75,37 +77,53 @@ namespace LauFitnessApp.ViewModels
 
             if (isresult)
             {
+                WorkoutValidator validations = new WorkoutValidator();
+                var validationresult = validations.Validate(SelectedWorkout);
 
-                var workout = mapper.Map<Workout>(SelectedWorkout);
-                var workoutSets = mapper.Map<ObservableCollection<WorkoutSet>>(WorkoutSets);
-
-                if (workout != null && workoutSets != null)
+                if (validationresult.IsValid)
                 {
-                    workout.WorkoutSets = workoutSets;
-                    if (workout.Id <= 0)
+                    var workout = mapper.Map<Workout>(SelectedWorkout);
+                    var workoutSets = mapper.Map<ObservableCollection<WorkoutSet>>(WorkoutSets);
+
+                    if (workout != null && workoutSets != null)
                     {
-
-                        await workoutRepository.AddWorkout(workout);
-
-                    }
-
-                    /*
-                    else
-                    {
-                        var workoutdb = await workoutRepository.GetWorkout(SelectedWorkout.Id);
-                        if (workoutdb != null)
+                        workout.WorkoutSets = workoutSets;
+                        if (workout.Id <= 0)
                         {
-                            mapper.Map(SelectedWorkout, workoutdb);
 
-                            workoutRepository.UpdateWorkout(workoutdb);
+                            await workoutRepository.AddWorkout(workout);
+
                         }
 
+                        /*
+                        else
+                        {
+                            var workoutdb = await workoutRepository.GetWorkout(SelectedWorkout.Id);
+                            if (workoutdb != null)
+                            {
+                                mapper.Map(SelectedWorkout, workoutdb);
 
+                                workoutRepository.UpdateWorkout(workoutdb);
+                            }
+
+
+                        }
+                        */
+                        await workoutRepository.Save();
+                        SelectedWorkout.Id = workout.Id;
                     }
-                    */
-                    await workoutRepository.Save();
-                    SelectedWorkout.Id = workout.Id;
                 }
+                else
+                {
+                    StringBuilder errorMessage = new StringBuilder();
+                    foreach (var error in validationresult.Errors.Select(p => p.ErrorMessage))
+                    {
+                        errorMessage.AppendLine(error);
+
+                    };
+                    await Shell.Current.DisplayAlert("workout", errorMessage.ToString(), "Cancel");
+                }
+
             }
 
         }
