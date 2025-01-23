@@ -8,36 +8,42 @@
             x:DataType="viewmodels:ExerciseViewModel"
             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
             xmlns:sf="clr-namespace:Syncfusion.Maui.Toolkit.TextInputLayout;assembly=Syncfusion.Maui.Toolkit">
-    <VerticalStackLayout Margin="10">
-        <toolkit:Expander>
-            <toolkit:Expander.Header>
-                <Label Text="Add exercise (tap me)"
-                       FontAttributes="Bold"
-                       FontSize="Medium"/>
-            </toolkit:Expander.Header>
-            <VerticalStackLayout Spacing="10">
+    
+    <Grid RowDefinitions="auto,auto,auto,*" Margin="15" RowSpacing="10" ColumnSpacing="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="{OnIdiom Desktop=400,Phone=auto}"/>
+            <ColumnDefinition Width="{OnIdiom Desktop=400,Phone=*}"/>
+        </Grid.ColumnDefinitions>
 
-            
-                <sf:SfTextInputLayout Hint="Name" >
-                    <Entry Text="{Binding Exercise.Name}" />
-                </sf:SfTextInputLayout>
+        <Grid.HorizontalOptions>
 
-                <sf:SfTextInputLayout Hint="Bodypart" >
-                    <Entry Text="{Binding Exercise.Bodypart}" />
-                </sf:SfTextInputLayout>
+            <OnIdiom x:TypeArguments="LayoutOptions">
+                <OnIdiom.Desktop>
+                    Center
+                </OnIdiom.Desktop>
+                <OnIdiom.Phone>
+                    FillAndExpand
+                </OnIdiom.Phone>
 
-
-               
-                <Button  Text="Add"
-                        Command="{Binding AddCommand}"></Button>
-            </VerticalStackLayout>
-        </toolkit:Expander>
+            </OnIdiom>
+        </Grid.HorizontalOptions>
+        <VerticalStackLayout Grid.Row="0" Grid.Column="0" >
+            <Label Text="Bodypart" FontAttributes="Bold"/>
+            <Entry Text="{Binding Exercise.Bodypart}" />
+        </VerticalStackLayout>
+        <VerticalStackLayout Grid.Row="0" Grid.Column="1">
+            <Label Grid.Column="0" Text="Exercise" FontAttributes="Bold"/>
+            <Entry Text="{Binding Exercise.Name}" />
+        </VerticalStackLayout>
+        <VerticalStackLayout Grid.Row="1" Grid.ColumnSpan="2">
+            <Button Command="{Binding AddCommand}" Text="Add"></Button>
+        </VerticalStackLayout>
         <Label Text="Your exercises"
                FontAttributes="Bold"
-               FontSize="Medium"/>
+               FontSize="Medium"
+               Grid.Row="2"/>
 
-        <CollectionView  ItemsSource="{Binding Exercises}"
-                HeightRequest="400" >
+        <CollectionView Grid.ColumnSpan="2"  Grid.Row="3" ItemsSource="{Binding Exercises}">
             <CollectionView.ItemTemplate >
                 <DataTemplate  x:DataType="models:ExerciseDTO">
                     <VerticalStackLayout Padding="10">
@@ -58,5 +64,5 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-    </VerticalStackLayout>
+    </Grid>
 </ContentPage>
