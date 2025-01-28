@@ -2,11 +2,6 @@
 using DataAcces.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAcces.Repositories
 {
@@ -18,6 +13,10 @@ namespace DataAcces.Repositories
             this.databaseContext = databaseContext;
         }
 
+        public Task<bool> DoesExerciseHaveWorkoutSet(int idExercise)
+        {
+            return databaseContext.WorkoutSets.Include(p => p.Exercise).AnyAsync(p => p.Exercise.Id == idExercise);
+        }
         public Task<List<Exercise>> GetExercises()
         {
             return databaseContext.Exercises.ToListAsync();
@@ -36,10 +35,10 @@ namespace DataAcces.Repositories
 
         public void RemoveExercise(int id)
         {
-  
+
             var exercise = databaseContext.Exercises.Find(id);
 
-            if(exercise != null)
+            if (exercise != null)
                 databaseContext.Exercises.Remove(exercise);
         }
         public Task Save()

@@ -6,7 +6,6 @@ using DataAcces.Repositories;
 using LauFitnessApp.Models;
 using LauFitnessApp.Validators;
 using System.Collections.ObjectModel;
-using System.Text;
 
 namespace LauFitnessApp.ViewModels
 {
@@ -28,13 +27,13 @@ namespace LauFitnessApp.ViewModels
         IExerciseRepository exerciseRepository;
         IWorkoutRepository workoutRepository;
         IMapper mapper;
-
-        public WorkoutViewModel(IExerciseRepository exerciseRepository, IWorkoutRepository workoutRepository, IMapper mapper)
+        ShowValidatorDisplay showValidatorDisplay;
+        public WorkoutViewModel(IExerciseRepository exerciseRepository, IWorkoutRepository workoutRepository, IMapper mapper, ShowValidatorDisplay showValidatorDisplay)
         {
             this.exerciseRepository = exerciseRepository;
             this.workoutRepository = workoutRepository;
             this.mapper = mapper;
-
+            this.showValidatorDisplay = showValidatorDisplay;
             Exercises = new ObservableCollection<ExerciseDTO>();
 
             SelectedWorkout = new WorkoutDTO();
@@ -115,13 +114,7 @@ namespace LauFitnessApp.ViewModels
                 }
                 else
                 {
-                    StringBuilder errorMessage = new StringBuilder();
-                    foreach (var error in validationresult.Errors.Select(p => p.ErrorMessage))
-                    {
-                        errorMessage.AppendLine(error);
-
-                    };
-                    await Shell.Current.DisplayAlert("workout", errorMessage.ToString(), "Cancel");
+                    await showValidatorDisplay.ShowValidationAsync(validationresult, "workout");
                 }
 
             }

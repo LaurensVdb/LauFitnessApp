@@ -3,9 +3,10 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DataAcces.Entities;
 using DataAcces.Repositories;
+using FluentValidation;
 using LauFitnessApp.Models;
+using LauFitnessApp.Validators;
 using System.Collections.ObjectModel;
-
 namespace LauFitnessApp.ViewModels
 {
     public partial class ExerciseViewModel : ObservableObject
@@ -18,10 +19,12 @@ namespace LauFitnessApp.ViewModels
 
         IExerciseRepository repository;
         IMapper mapper;
-        public ExerciseViewModel(IExerciseRepository repository, IMapper mapper)
+        ShowValidatorDisplay showValidatorDisplay;
+        public ExerciseViewModel(IExerciseRepository repository, IMapper mapper, ShowValidatorDisplay showValidatorDisplay)
         {
             this.mapper = mapper;
             this.repository = repository;
+            this.showValidatorDisplay = showValidatorDisplay;
             exercise = new ExerciseDTO();
             exercises = new ObservableCollection<ExerciseDTO>();
 
@@ -63,10 +66,18 @@ namespace LauFitnessApp.ViewModels
         [RelayCommand]
         async Task Delete(ExerciseDTO exercise)
         {
-
-            repository.RemoveExercise(exercise.Id);
-            await repository.Save();
-            Exercises.Remove(exercise);
+            ExerciseValidator validator = new ExerciseValidator(repository);
+            var result = await validator.ValidateAsync(exercise, options => options.IncludeRuleSets("Delete"));
+            if (result.IsValid)
+            {
+                repository.RemoveExercise(exercise.Id);
+                await repository.Save();
+                Exercises.Remove(exercise);
+            }
+            else
+            {
+                await showValidatorDisplay.ShowValidationAsync(result, "exercises");
+            }
 
         }
     }
