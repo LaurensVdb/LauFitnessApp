@@ -28,12 +28,14 @@ namespace LauFitnessApp.ViewModels
         IWorkoutRepository workoutRepository;
         IMapper mapper;
         ShowValidatorDisplay showValidatorDisplay;
-        public WorkoutViewModel(IExerciseRepository exerciseRepository, IWorkoutRepository workoutRepository, IMapper mapper, ShowValidatorDisplay showValidatorDisplay)
+        WorkoutValidator validator;
+        public WorkoutViewModel(IExerciseRepository exerciseRepository, IWorkoutRepository workoutRepository, IMapper mapper, ShowValidatorDisplay showValidatorDisplay, WorkoutValidator validator)
         {
             this.exerciseRepository = exerciseRepository;
             this.workoutRepository = workoutRepository;
             this.mapper = mapper;
             this.showValidatorDisplay = showValidatorDisplay;
+            this.validator = validator;
             Exercises = new ObservableCollection<ExerciseDTO>();
 
             SelectedWorkout = new WorkoutDTO();
@@ -76,8 +78,8 @@ namespace LauFitnessApp.ViewModels
 
             if (isresult)
             {
-                WorkoutValidator validations = new WorkoutValidator();
-                var validationresult = validations.Validate(SelectedWorkout);
+
+                var validationresult = validator.Validate(SelectedWorkout);
 
                 if (validationresult.IsValid)
                 {

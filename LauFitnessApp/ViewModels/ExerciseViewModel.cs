@@ -20,11 +20,13 @@ namespace LauFitnessApp.ViewModels
         IExerciseRepository repository;
         IMapper mapper;
         ShowValidatorDisplay showValidatorDisplay;
-        public ExerciseViewModel(IExerciseRepository repository, IMapper mapper, ShowValidatorDisplay showValidatorDisplay)
+        ExerciseValidator validator;
+        public ExerciseViewModel(IExerciseRepository repository, IMapper mapper, ShowValidatorDisplay showValidatorDisplay, ExerciseValidator validator)
         {
             this.mapper = mapper;
             this.repository = repository;
             this.showValidatorDisplay = showValidatorDisplay;
+            this.validator = validator;
             exercise = new ExerciseDTO();
             exercises = new ObservableCollection<ExerciseDTO>();
 
@@ -49,24 +51,33 @@ namespace LauFitnessApp.ViewModels
         [RelayCommand]
         async Task Add()
         {
-            Exercises.Add(Exercise);
 
-            Exercise exerciseDB = new Exercise();
+            var result = validator.Validate(this.Exercise);
+            if (result.IsValid)
+            {
+                Exercises.Add(Exercise);
 
-            exerciseDB.BodyPart = Exercise.Bodypart;
-            exerciseDB.Name = Exercise.Name;
-            await repository.AddExercise(exerciseDB);
+                Exercise exerciseDB = new Exercise();
+
+                exerciseDB.BodyPart = Exercise.Bodypart;
+                exerciseDB.Name = Exercise.Name;
+                await repository.AddExercise(exerciseDB);
 
 
-            await repository.Save();
-            Exercise = new ExerciseDTO();
+                await repository.Save();
+                Exercise = new ExerciseDTO();
+            }
+            else
+            {
+                await showValidatorDisplay.ShowValidationAsync(result, "exercises");
+            }
 
         }
 
         [RelayCommand]
         async Task Delete(ExerciseDTO exercise)
         {
-            ExerciseValidator validator = new ExerciseValidator(repository);
+
             var result = await validator.ValidateAsync(exercise, options => options.IncludeRuleSets("Delete"));
             if (result.IsValid)
             {

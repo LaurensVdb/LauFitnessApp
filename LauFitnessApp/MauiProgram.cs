@@ -48,6 +48,8 @@ namespace LauFitnessApp
             builder.Services.AddTransient<WorkoutViewModel>();
             builder.Services.AddTransient<WorkoutPage>();
             builder.Services.AddTransient<ShowValidatorDisplay>();
+            builder.Services.AddTransient<ExerciseValidator>();
+            builder.Services.AddTransient<WorkoutValidator>();
 
 #if DEBUG
             builder.Logging.AddDebug();
