@@ -10,5 +10,6 @@ namespace DataAcces.Repositories
         Task Save();
         void UpdateExercise(Exercise exercise);
         void RemoveExercise(int id);
+        Task<bool> DoesExerciseHaveWorkoutSet(int idExercise);
     }
 }

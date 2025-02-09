@@ -2,12 +2,11 @@
 using DataAcces.DatabaseConfig;
 using DataAcces.Repositories;
 using LauFitnessApp.MapperProfiles;
+using LauFitnessApp.Validators;
 using LauFitnessApp.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Syncfusion.Maui.Toolkit.Hosting;
-using AutoMapper.EquivalencyExpression;
-using AutoMapper;
 namespace LauFitnessApp
 {
     public static class MauiProgram
@@ -30,15 +29,16 @@ namespace LauFitnessApp
 
 
             builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
-            builder.Services.AddDbContext<DatabaseContext>(options => {
+            builder.Services.AddDbContext<DatabaseContext>(options =>
+            {
                 var path = Path.Combine(FileSystem.AppDataDirectory, "exercise.db");
                 options.UseSqlite($"Filename={path}");
 
             }, ServiceLifetime.Singleton);
-            
+
             builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
             builder.Services.AddTransient<IWorkoutRepository, WorkoutRepository>();
-
+            builder.Services.AddTransient<IWorkoutSetRepository, WorkoutSetRepository>();
             builder.Services.AddTransient<MainViewModel>();
             builder.Services.AddTransient<MainPage>();
 
@@ -47,6 +47,10 @@ namespace LauFitnessApp
 
             builder.Services.AddTransient<WorkoutViewModel>();
             builder.Services.AddTransient<WorkoutPage>();
+            builder.Services.AddTransient<IShowValidatorDisplay, ShowValidatorDisplay>();
+            builder.Services.AddTransient<ExerciseValidator>();
+            builder.Services.AddTransient<WorkoutValidator>();
+            builder.Services.AddTransient<WorkoutSetValidator>();
 
 #if DEBUG
             builder.Logging.AddDebug();

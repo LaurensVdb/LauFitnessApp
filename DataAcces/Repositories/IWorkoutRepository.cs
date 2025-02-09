@@ -8,7 +8,7 @@ namespace DataAcces.Repositories
         ValueTask<EntityEntry<Workout>> AddWorkout(Workout workout);
         Task<List<Workout>> GetWorkoutsOnly();
         Task<List<Workout>> GetWorkoutsWithWorkoutSets();
-        void RemoveExercise(int id);
+        void RemoveWorkout(int id);
         Task Save();
         void UpdateWorkout(Workout workout);
 

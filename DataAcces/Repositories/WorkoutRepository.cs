@@ -2,7 +2,6 @@
 using DataAcces.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using SQLitePCL;
 
 namespace DataAcces.Repositories
 {
@@ -16,7 +15,7 @@ namespace DataAcces.Repositories
 
         public Task<Workout> GetWorkout(int id)
         {
-            return databaseContext.Workouts.FirstAsync(p=>p.Id==id);
+            return databaseContext.Workouts.FirstAsync(p => p.Id == id);
         }
 
 
@@ -27,17 +26,17 @@ namespace DataAcces.Repositories
 
         public Task<List<Workout>> GetWorkoutsWithWorkoutSets()
         {
-            return databaseContext.Workouts.Include(p => p.WorkoutSets).ThenInclude(ws=>ws.Exercise).ToListAsync();
+            return databaseContext.Workouts.Include(p => p.WorkoutSets).ThenInclude(ws => ws.Exercise).ToListAsync();
         }
 
         public ValueTask<EntityEntry<Workout>> AddWorkout(Workout workout)
         {
-            foreach (var entry in workout.WorkoutSets) 
+            foreach (var entry in workout.WorkoutSets)
             {
-                var existingExercise = databaseContext.Exercises.Local.First(e => e.Id ==entry.Exercise.Id);
+                var existingExercise = databaseContext.Exercises.Local.First(e => e.Id == entry.Exercise.Id);
                 entry.Exercise = existingExercise;
             }
-         
+
 
 
             return databaseContext.Workouts.AddAsync(workout);
@@ -51,7 +50,7 @@ namespace DataAcces.Repositories
             databaseContext.Workouts.Update(workout);
         }
 
-        public void RemoveExercise(int id)
+        public void RemoveWorkout(int id)
         {
 
             var workout = databaseContext.Workouts.Find(id);

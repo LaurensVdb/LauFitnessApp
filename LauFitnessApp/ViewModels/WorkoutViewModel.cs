@@ -6,7 +6,6 @@ using DataAcces.Repositories;
 using LauFitnessApp.Models;
 using LauFitnessApp.Validators;
 using System.Collections.ObjectModel;
-using System.Text;
 
 namespace LauFitnessApp.ViewModels
 {
@@ -28,13 +27,17 @@ namespace LauFitnessApp.ViewModels
         IExerciseRepository exerciseRepository;
         IWorkoutRepository workoutRepository;
         IMapper mapper;
-
-        public WorkoutViewModel(IExerciseRepository exerciseRepository, IWorkoutRepository workoutRepository, IMapper mapper)
+        IShowValidatorDisplay showValidatorDisplay;
+        WorkoutValidator validator;
+        WorkoutSetValidator workoutSetValidator;
+        public WorkoutViewModel(IExerciseRepository exerciseRepository, IWorkoutRepository workoutRepository, IMapper mapper, IShowValidatorDisplay showValidatorDisplay, WorkoutValidator validator, WorkoutSetValidator workoutSetValidator)
         {
             this.exerciseRepository = exerciseRepository;
             this.workoutRepository = workoutRepository;
             this.mapper = mapper;
-
+            this.showValidatorDisplay = showValidatorDisplay;
+            this.workoutSetValidator = workoutSetValidator;
+            this.validator = validator;
             Exercises = new ObservableCollection<ExerciseDTO>();
 
             SelectedWorkout = new WorkoutDTO();
@@ -53,14 +56,20 @@ namespace LauFitnessApp.ViewModels
         }
 
         [RelayCommand]
-        void AddWorkoutSet()
+        async Task AddWorkoutSet()
         {
-            if (SelectedWorkoutSet.Exercise != null)
+            var result = workoutSetValidator.Validate(SelectedWorkoutSet);
+            if (result.IsValid)
             {
                 WorkoutSets.Add(SelectedWorkoutSet);
                 SelectedWorkoutSet = new WorkoutSetDTO();
                 SelectedWorkoutSet.Exercise = new ExerciseDTO();
             }
+            else
+            {
+                await showValidatorDisplay.ShowValidationAsync(result, "workout");
+            }
+
 
         }
 
@@ -77,8 +86,8 @@ namespace LauFitnessApp.ViewModels
 
             if (isresult)
             {
-                WorkoutValidator validations = new WorkoutValidator();
-                var validationresult = validations.Validate(SelectedWorkout);
+
+                var validationresult = validator.Validate(SelectedWorkout);
 
                 if (validationresult.IsValid)
                 {
@@ -115,13 +124,7 @@ namespace LauFitnessApp.ViewModels
                 }
                 else
                 {
-                    StringBuilder errorMessage = new StringBuilder();
-                    foreach (var error in validationresult.Errors.Select(p => p.ErrorMessage))
-                    {
-                        errorMessage.AppendLine(error);
-
-                    };
-                    await Shell.Current.DisplayAlert("workout", errorMessage.ToString(), "Cancel");
+                    await showValidatorDisplay.ShowValidationAsync(validationresult, "workout");
                 }
 
             }
