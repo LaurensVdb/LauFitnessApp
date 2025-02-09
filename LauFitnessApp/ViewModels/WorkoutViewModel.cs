@@ -27,10 +27,10 @@ namespace LauFitnessApp.ViewModels
         IExerciseRepository exerciseRepository;
         IWorkoutRepository workoutRepository;
         IMapper mapper;
-        ShowValidatorDisplay showValidatorDisplay;
+        IShowValidatorDisplay showValidatorDisplay;
         WorkoutValidator validator;
         WorkoutSetValidator workoutSetValidator;
-        public WorkoutViewModel(IExerciseRepository exerciseRepository, IWorkoutRepository workoutRepository, IMapper mapper, ShowValidatorDisplay showValidatorDisplay, WorkoutValidator validator, WorkoutSetValidator workoutSetValidator)
+        public WorkoutViewModel(IExerciseRepository exerciseRepository, IWorkoutRepository workoutRepository, IMapper mapper, IShowValidatorDisplay showValidatorDisplay, WorkoutValidator validator, WorkoutSetValidator workoutSetValidator)
         {
             this.exerciseRepository = exerciseRepository;
             this.workoutRepository = workoutRepository;

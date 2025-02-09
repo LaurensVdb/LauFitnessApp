@@ -38,7 +38,7 @@ namespace LauFitnessApp
 
             builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
             builder.Services.AddTransient<IWorkoutRepository, WorkoutRepository>();
-
+            builder.Services.AddTransient<IWorkoutSetRepository, WorkoutSetRepository>();
             builder.Services.AddTransient<MainViewModel>();
             builder.Services.AddTransient<MainPage>();
 
@@ -47,7 +47,7 @@ namespace LauFitnessApp
 
             builder.Services.AddTransient<WorkoutViewModel>();
             builder.Services.AddTransient<WorkoutPage>();
-            builder.Services.AddTransient<ShowValidatorDisplay>();
+            builder.Services.AddTransient<IShowValidatorDisplay, ShowValidatorDisplay>();
             builder.Services.AddTransient<ExerciseValidator>();
             builder.Services.AddTransient<WorkoutValidator>();
             builder.Services.AddTransient<WorkoutSetValidator>();

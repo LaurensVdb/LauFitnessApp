@@ -19,14 +19,17 @@ namespace LauFitnessApp.ViewModels
 
         IExerciseRepository repository;
         IMapper mapper;
-        ShowValidatorDisplay showValidatorDisplay;
+        IShowValidatorDisplay showValidatorDisplay;
         ExerciseValidator validator;
-        public ExerciseViewModel(IExerciseRepository repository, IMapper mapper, ShowValidatorDisplay showValidatorDisplay, ExerciseValidator validator)
+
+        IWorkoutSetRepository workoutSetRepository;
+        public ExerciseViewModel(IExerciseRepository repository, IWorkoutSetRepository workoutSetRepository, IMapper mapper, IShowValidatorDisplay showValidatorDisplay, ExerciseValidator validator)
         {
             this.mapper = mapper;
             this.repository = repository;
             this.showValidatorDisplay = showValidatorDisplay;
             this.validator = validator;
+            this.workoutSetRepository = workoutSetRepository;
             exercise = new ExerciseDTO();
             exercises = new ObservableCollection<ExerciseDTO>();
 
@@ -78,18 +81,32 @@ namespace LauFitnessApp.ViewModels
         async Task Delete(ExerciseDTO exercise)
         {
 
-            var result = await validator.ValidateAsync(exercise, options => options.IncludeRuleSets("Delete"));
-            if (result.IsValid)
+            var validationresult = await validator.ValidateAsync(exercise, options => options.IncludeRuleSets("Delete"));
+            if (validationresult.IsValid)
             {
-                repository.RemoveExercise(exercise.Id);
-                await repository.Save();
-                Exercises.Remove(exercise);
+                await RemoveExerciseAsync(exercise);
             }
             else
             {
-                await showValidatorDisplay.ShowValidationAsync(result, "exercises");
+                var resultConfirmation = await showValidatorDisplay.ShowValidationWithConfirmation(validationresult, "exercises", "Delete the workoutsets and the exercise?");
+                if (resultConfirmation)
+                {
+                    await workoutSetRepository.RemoveWorkoutSetsFromExercise(exercise.Id);
+                    await RemoveExerciseAsync(exercise);
+                }
             }
 
         }
+
+
+
+        private async Task RemoveExerciseAsync(ExerciseDTO exercise)
+        {
+            repository.RemoveExercise(exercise.Id);
+
+            Exercises.Remove(exercise);
+            await repository.Save();
+        }
+
     }
 }
