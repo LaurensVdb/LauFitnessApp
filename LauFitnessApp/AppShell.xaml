@@ -4,12 +4,45 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:LauFitnessApp"
-    Shell.FlyoutBehavior="Disabled"
+  
     Title="LauFitnessApp">
-
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <!--<Shell.ItemTemplate>
+        <DataTemplate>
+            <HorizontalStackLayout>
+                <Image Source="{Binding FlyoutIcon}"
+                       Margin="5"
+                        />
+                <Label 
+                       Text="{Binding Title}"
+                       FontAttributes="Bold"
+                       VerticalTextAlignment="Center" />
+            </HorizontalStackLayout>
+        </DataTemplate>
+    </Shell.ItemTemplate>
+    <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
+        <ShellContent
+           Title="Main" 
+           Icon="{FontImageSource Color=LightBlue, FontFamily='FontAwesome', Glyph='&#xf015;'}"
+           ContentTemplate="{DataTemplate local:MainPage}"
+         />
+        <ShellContent
+          Title="Exercise" 
+          Icon="{FontImageSource Color=LightBlue,FontFamily='FontAwesome', Glyph='&#xf0ae;'}"
+          ContentTemplate="{DataTemplate local:ExercisePage}" />
+      
+    </FlyoutItem>-->
+    <TabBar>
+        <Tab   Title="Main" Icon="{FontImageSource Color=LightBlue, FontFamily='FontAwesome', Glyph='&#xf015;'}">
+            <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
+        </Tab>
+        <Tab  Title="Exercise"
+         Icon="{FontImageSource Color=LightBlue,FontFamily='FontAwesome', Glyph='&#xf0ae;'}">
+            <ShellContent ContentTemplate="{DataTemplate local:ExercisePage}" />
+        </Tab>
+        <Tab  Title="Workout"
+                Icon="{FontImageSource Color=LightBlue,FontFamily='FontAwesome', Glyph='&#xf44b;'}">
+            <ShellContent ContentTemplate="{DataTemplate local:WorkoutPage}" />
+        </Tab>
+    </TabBar>
 
 </Shell>
