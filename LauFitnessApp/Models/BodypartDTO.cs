@@ -2,14 +2,13 @@
 
 namespace LauFitnessApp.Models
 {
-    public partial class ExerciseDTO : ObservableObject
+    public partial class BodypartDTO : ObservableObject
     {
         [ObservableProperty]
         public string name = "";
+
         [ObservableProperty]
         public int id;
 
-        [ObservableProperty]
-        public BodypartDTO bodypart;
     }
 }

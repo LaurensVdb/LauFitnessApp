@@ -21,7 +21,7 @@
                     </Style>
                     <Style TargetType="Button">
                         <Setter Property="BackgroundColor" Value="SteelBlue" />
-                        <Setter Property="CornerRadius" Value="20" />
+                        <Setter Property="CornerRadius" Value="5" />
                         <Setter Property="FontFamily" Value="Arial" />
                         <Setter Property="TextColor" Value="White" />
                         <Setter Property="FontSize" Value="14" />

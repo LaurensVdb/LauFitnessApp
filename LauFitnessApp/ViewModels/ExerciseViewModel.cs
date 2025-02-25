@@ -17,6 +17,10 @@ namespace LauFitnessApp.ViewModels
         [ObservableProperty]
         ObservableCollection<ExerciseDTO> exercises;
 
+        [ObservableProperty]
+        ObservableCollection<BodypartDTO> bodyparts;
+
+
         IExerciseRepository repository;
         IMapper mapper;
         IShowValidatorDisplay showValidatorDisplay;
@@ -32,6 +36,7 @@ namespace LauFitnessApp.ViewModels
             this.workoutSetRepository = workoutSetRepository;
             exercise = new ExerciseDTO();
             exercises = new ObservableCollection<ExerciseDTO>();
+            bodyparts = new ObservableCollection<BodypartDTO>();
 
 
         }
@@ -39,7 +44,10 @@ namespace LauFitnessApp.ViewModels
         public async Task GetExercises()
         {
             List<Exercise> result = await repository.GetExercises();
+            List<Bodypart> result2 = await repository.GetBodyparts();
+
             Exercises = mapper.Map<ObservableCollection<ExerciseDTO>>(result);
+            Bodyparts = mapper.Map<ObservableCollection<BodypartDTO>>(result2);
 
             // var result2 = mapper.Map<List<ExerciseDTO>>(result);
             // var ex = result2.FirstOrDefault();
@@ -62,8 +70,10 @@ namespace LauFitnessApp.ViewModels
 
                 Exercise exerciseDB = new Exercise();
 
-                exerciseDB.BodyPart = Exercise.Bodypart;
-                exerciseDB.Name = Exercise.Name;
+                //exerciseDB.BodyPart = Exercise.Bodypart;
+                //exerciseDB.Name = Exercise.Name;
+
+                mapper.Map(Exercise, exerciseDB);
                 await repository.AddExercise(exerciseDB);
 
 

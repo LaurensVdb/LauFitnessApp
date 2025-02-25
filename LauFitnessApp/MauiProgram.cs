@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui;
 using DataAcces.DatabaseConfig;
+using DataAcces.Entities;
 using DataAcces.Repositories;
 using LauFitnessApp.MapperProfiles;
 using LauFitnessApp.Validators;
@@ -31,8 +32,28 @@ namespace LauFitnessApp
             builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
             builder.Services.AddDbContext<DatabaseContext>(options =>
             {
-                var path = Path.Combine(FileSystem.AppDataDirectory, "exercise.db");
-                options.UseSqlite($"Filename={path}");
+                var path = Path.Combine(FileSystem.AppDataDirectory, "laufitness2.db");
+                options.UseSqlite($"Filename={path}").UseSeeding((context, _) =>
+                {
+                    var bodyparts = context.Set<Bodypart>().Count();
+                    if (bodyparts <= 0)
+                    {
+                        context.Set<Bodypart>().Add(new Bodypart { Name = "Chest" });
+                        context.Set<Bodypart>().Add(new Bodypart { Name = "Upper back" });
+                        context.Set<Bodypart>().Add(new Bodypart { Name = "Lower back" });
+                        context.Set<Bodypart>().Add(new Bodypart { Name = "Shoulders" });
+                        context.Set<Bodypart>().Add(new Bodypart { Name = "Chest" });
+                        context.Set<Bodypart>().Add(new Bodypart { Name = "Biceps" });
+                        context.Set<Bodypart>().Add(new Bodypart { Name = "Triceps" });
+                        context.Set<Bodypart>().Add(new Bodypart { Name = "Quadtriceps" });
+                        context.Set<Bodypart>().Add(new Bodypart { Name = "Hamstrings" });
+                        context.Set<Bodypart>().Add(new Bodypart { Name = "Calves" });
+                        context.Set<Bodypart>().Add(new Bodypart { Name = "Abs" });
+                        context.Set<Bodypart>().Add(new Bodypart { Name = "Traps" });
+
+                        context.SaveChanges();
+                    }
+                });
 
             }, ServiceLifetime.Singleton);
 

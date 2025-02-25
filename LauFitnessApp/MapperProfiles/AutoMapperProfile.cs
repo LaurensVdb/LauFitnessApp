@@ -11,6 +11,8 @@ namespace LauFitnessApp.MapperProfiles
 
             CreateMap<Exercise, ExerciseDTO>();
             CreateMap<ExerciseDTO, Exercise>();
+            CreateMap<Bodypart, BodypartDTO>();
+            CreateMap<BodypartDTO, Bodypart>();
             CreateMap<WorkoutDTO, Workout>()
                   .ForMember(x => x.WorkoutSets, opt => opt.Ignore());
             CreateMap<Workout, WorkoutDTO>();

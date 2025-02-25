@@ -8,6 +8,7 @@ namespace DataAcces.DatabaseConfig
         public DbSet<Exercise> Exercises { get; set; }
         public DbSet<WorkoutSet> WorkoutSets { get; set; }
         public DbSet<Workout> Workouts { get; set; }
+        public DbSet<Bodypart> Bodyparts { get; set; }
 
         /*
         public DatabaseContext()
@@ -15,6 +16,7 @@ namespace DataAcces.DatabaseConfig
 
         }
         */
+
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
            : base(options)
         {
