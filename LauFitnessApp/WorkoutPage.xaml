@@ -10,7 +10,7 @@
              xmlns:models="clr-namespace:LauFitnessApp.Models">
 
     <Grid>
-        <ScrollView>
+      
             <Grid RowDefinitions="auto,*,auto" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="{OnIdiom Desktop=auto,Phone=*}"/>
@@ -37,29 +37,29 @@
                     </Grid.ColumnDefinitions>
 
                     <VerticalStackLayout Grid.Row="0" Grid.ColumnSpan="3" >
-                        <Label Text="Workout Name" FontAttributes="Bold"/>
+                        <Label Text="Workout Name" Style="{StaticResource Header}"/>
                         <Entry Text="{Binding SelectedWorkout.WorkoutName}" Placeholder="Enter workout name" />
                     </VerticalStackLayout>
                     <VerticalStackLayout Grid.Row="1" Grid.Column="0">
-                        <Label Grid.Column="0" Text="Date" FontAttributes="Bold"/>
+                        <Label Grid.Column="0" Text="Date" Style="{StaticResource Header}"/>
                         <DatePicker Date="{Binding SelectedWorkout.Date}"/>
                     </VerticalStackLayout>
                     <VerticalStackLayout Grid.Row="1" Grid.Column="1">
-                        <Label Text="Time" FontAttributes="Bold"/>
+                        <Label Text="Time" Style="{StaticResource Header}"/>
                         <TimePicker  Time="{Binding SelectedWorkout.Time}" />
                     </VerticalStackLayout>
                     <VerticalStackLayout Grid.Row="2" Grid.Column="0">
-                        <Label Text="Exercise"  FontAttributes="Bold"/>
+                        <Label Text="Exercise"  Style="{StaticResource Header}"/>
                         <Picker ItemsSource="{Binding Exercises}"  ItemDisplayBinding="{Binding Name}"  SelectedItem="{Binding SelectedWorkoutSet.Exercise}"></Picker>
 
                     </VerticalStackLayout>
                     <VerticalStackLayout Grid.Row="2" Grid.Column="1">
-                        <Label Text="Reps"  FontAttributes="Bold"/>
+                        <Label Text="Reps"  Style="{StaticResource Header}"/>
                         <Entry Text="{Binding SelectedWorkoutSet.Reps}" Placeholder="Repetitions" Keyboard="Numeric" />
 
                     </VerticalStackLayout>
                     <VerticalStackLayout Grid.Row="2" Grid.Column="2">
-                        <Label Text="Weight"  FontAttributes="Bold"/>
+                        <Label Text="Weight"  Style="{StaticResource Header}"/>
                         <Entry Text="{Binding SelectedWorkoutSet.Weight}" Keyboard="Numeric" />
 
                     </VerticalStackLayout>
@@ -68,7 +68,7 @@
 
                 <ScrollView Grid.Row="1" Margin="15">
                     <StackLayout  Spacing="10">
-                        <Label Text="Workout Sets" FontAttributes="Bold" />
+                        <Label Text="Workout Sets" Style="{StaticResource Header}" />
                         <CollectionView  SelectionMode="None" Margin="0,0,0,10" ItemsSource="{Binding WorkoutSets}">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate  x:DataType="models:WorkoutSetDTO">
@@ -89,6 +89,6 @@
                 </ScrollView>
                 <Button Grid.Row="2" Text="End your workout" Command="{Binding SaveWorkoutCommand}" />
             </Grid>
-        </ScrollView>
+       
     </Grid>
 </ContentPage>
