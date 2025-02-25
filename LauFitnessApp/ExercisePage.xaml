@@ -28,18 +28,18 @@
             </OnIdiom>
         </Grid.HorizontalOptions>
         <VerticalStackLayout Grid.Row="0" Grid.Column="0" >
-            <Label Text="Bodypart" FontAttributes="Bold"/>
+            <Label Text="Bodypart" Style="{StaticResource Header}"/>
             <Entry Text="{Binding Exercise.Bodypart}" />
         </VerticalStackLayout>
         <VerticalStackLayout Grid.Row="0" Grid.Column="1">
-            <Label Grid.Column="0" Text="Exercise" FontAttributes="Bold"/>
+            <Label Grid.Column="0" Text="Exercise" Style="{StaticResource Header}"/>
             <Entry Text="{Binding Exercise.Name}" />
         </VerticalStackLayout>
         <VerticalStackLayout Grid.Row="1" Grid.ColumnSpan="2">
             <Button Command="{Binding AddCommand}" Text="Add"></Button>
         </VerticalStackLayout>
         <Label Text="Your exercises"
-               FontAttributes="Bold"
+               Style="{StaticResource Header}"
                FontSize="Medium"
                Grid.Row="2"/>
 
