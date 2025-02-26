@@ -9,6 +9,10 @@
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
                 <ResourceDictionary>
+                    <Style x:Key="BorderStyle1" TargetType="Border">
+                        <Setter Property="BackgroundColor" Value="WhiteSmoke" />
+                        <Setter Property="StrokeShape" Value="RoundRectangle 10,10,10,10" />
+                    </Style>
                     <Style TargetType="Label">
                         <Setter Property="TextColor" Value="SteelBlue"/>
                         <Setter Property="FontFamily" Value="Arial" />
@@ -26,7 +30,7 @@
                         <Setter Property="TextColor" Value="White" />
                         <Setter Property="FontSize" Value="14" />
                         <Setter Property="FontAttributes" Value="Bold"/>
-                        <Setter Property="Margin" Value="10"/>
+                      
                     </Style>
                     <Style TargetType="Shell" ApplyToDerivedTypes="True">
                         <Setter Property="Shell.BackgroundColor" Value="SteelBlue" />

@@ -49,8 +49,8 @@
                     <VerticalStackLayout Padding="10">
 
 
-                        <Border StrokeShape="RoundRectangle 10,10,10,10">
-                        <HorizontalStackLayout  Padding="15" Spacing="15"  BackgroundColor="WhiteSmoke">
+                        <Border Style="{StaticResource BorderStyle1}">
+                        <HorizontalStackLayout  Padding="15" Spacing="15">
                               
 
                                 <Button Text="&#xf068;" FontFamily="FontAwesome"
