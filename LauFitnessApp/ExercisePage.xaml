@@ -29,7 +29,7 @@
         </Grid.HorizontalOptions>
         <VerticalStackLayout Grid.Row="0" Grid.Column="0" >
             <Label Text="Bodypart" Style="{StaticResource Header}"/>
-            <Entry Text="{Binding Exercise.Bodypart}" />
+            <Picker ItemsSource="{Binding Bodyparts}"  ItemDisplayBinding="{Binding Name}"  SelectedItem="{Binding  Exercise.Bodypart}"></Picker>
         </VerticalStackLayout>
         <VerticalStackLayout Grid.Row="0" Grid.Column="1">
             <Label Grid.Column="0" Text="Exercise" Style="{StaticResource Header}"/>
@@ -49,15 +49,15 @@
                     <VerticalStackLayout Padding="10">
 
 
-                        <Border StrokeShape="RoundRectangle 10,10,10,10">
-                        <HorizontalStackLayout  Padding="15" Spacing="15"  BackgroundColor="WhiteSmoke">
+                        <Border Style="{StaticResource BorderStyle1}">
+                        <HorizontalStackLayout  Padding="15" Spacing="15">
                               
 
                                 <Button Text="&#xf068;" FontFamily="FontAwesome"
                               Command="{Binding DeleteCommand, Source={RelativeSource AncestorType={x:Type viewmodels:ExerciseViewModel}}, x:DataType=viewmodels:ExerciseViewModel}" 
                               CommandParameter="{Binding .}"></Button>          
                             <Label Text="{Binding Name}"></Label>
-                            <Label Text="{Binding Bodypart}"></Label>
+                            <Label Text="{Binding Bodypart.Name}"></Label>
                      </HorizontalStackLayout>
                     </Border>
                     </VerticalStackLayout>

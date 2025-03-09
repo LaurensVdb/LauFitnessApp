@@ -24,6 +24,8 @@ namespace DataAcces.Repositories
 
         public ValueTask<EntityEntry<Exercise>> AddExercise(Exercise exercise)
         {
+            var bodypart = databaseContext.Bodyparts.Local.First(e => e.Id == exercise.BodyPart.Id);
+            exercise.BodyPart = bodypart;
             return databaseContext.Exercises.AddAsync(exercise);
         }
 
@@ -44,6 +46,11 @@ namespace DataAcces.Repositories
         public Task Save()
         {
             return databaseContext.SaveChangesAsync();
+        }
+
+        public Task<List<Bodypart>> GetBodyparts()
+        {
+            return databaseContext.Bodyparts.ToListAsync();
         }
     }
 }
