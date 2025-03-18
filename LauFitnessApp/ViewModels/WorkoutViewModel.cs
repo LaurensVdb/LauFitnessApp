@@ -120,6 +120,7 @@ namespace LauFitnessApp.ViewModels
                         */
                         await workoutRepository.Save();
                         SelectedWorkout.Id = workout.Id;
+                        await Shell.Current.GoToAsync(nameof(MainPage));
                     }
                 }
                 else
