@@ -20,11 +20,18 @@ namespace LauFitnessApp.ViewModels
             this.workoutRepository = workoutRepository;
             this.mapper = mapper;
             Workouts = new ObservableCollection<WorkoutDTO>();
+
+        }
+
+        [RelayCommand]
+        public void ClickWorkout(WorkoutDTO workout)
+        {
+            workout.IsVisible = !workout.IsVisible;
         }
 
         public async Task GetWorkouts()
         {
-            List<Workout> result = await workoutRepository.GetWorkoutsOnly();
+            List<Workout> result = await workoutRepository.GetWorkoutsWithWorkoutSets();
             Workouts = mapper.Map<ObservableCollection<WorkoutDTO>>(result);
         }
         [RelayCommand]

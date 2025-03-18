@@ -15,5 +15,11 @@ namespace LauFitnessApp.Models
 
         [ObservableProperty]
         public TimeSpan time;
+
+        [ObservableProperty]
+        public bool isVisible = false;
+
+        [ObservableProperty]
+        public List<WorkoutSetDTO> workoutSets = new List<WorkoutSetDTO>();
     }
 }
