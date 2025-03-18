@@ -1,31 +1,71 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="LauFitnessApp.MainPage"
-             xmlns:viewmodels="clr-namespace:LauFitnessApp.ViewModels"
-             x:DataType="viewmodels:MainViewModel"
-             xmlns:models="clr-namespace:LauFitnessApp.Models"
-             Title="Lau Fitness">
+			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+			 x:Class="LauFitnessApp.MainPage"
+			 xmlns:viewmodels="clr-namespace:LauFitnessApp.ViewModels"
+			 x:DataType="viewmodels:MainViewModel"
+			 xmlns:models="clr-namespace:LauFitnessApp.Models"
+			 Title="Lau Fitness">
 
-    <Grid RowDefinitions="auto,auto,*" ColumnDefinitions="*"  Margin="15" RowSpacing="10">
-        <Label Grid.Row="1" Text="Activities" FontSize="24" FontAttributes="Bold"/>
-        <ScrollView Grid.Row="2" VerticalOptions="FillAndExpand">
-            <CollectionView ItemsSource="{Binding Workouts}" SelectionMode="None">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate  x:DataType="models:WorkoutDTO">
-                        <VerticalStackLayout Padding="10">
+	<Grid RowDefinitions="auto,auto,*" ColumnDefinitions="*"  Margin="15" RowSpacing="10">
+		<Label Grid.Row="1" Text="Activities" FontSize="24" FontAttributes="Bold"/>
+		<ScrollView Grid.Row="2" VerticalOptions="FillAndExpand">
+			<CollectionView ItemsSource="{Binding Workouts}" SelectionMode="None">
+				<CollectionView.ItemTemplate>
+					<DataTemplate  x:DataType="models:WorkoutDTO">
+                        <StackLayout Padding="10">
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ClickWorkoutCommand, 
+                                    Source={RelativeSource AncestorType={x:Type viewmodels:MainViewModel}}, x:DataType=viewmodels:MainViewModel}"
+                                    CommandParameter="{Binding .}"></TapGestureRecognizer>
+                            </StackLayout.GestureRecognizers>
                             <Border StrokeShape="RoundRectangle 10,10,10,10" Margin="5">
-                                <VerticalStackLayout Padding="10">
-                                    <Label Text="{Binding WorkoutName}" FontSize="18" FontAttributes="Bold" />
+                                <StackLayout Padding="10">
+                                    <VerticalStackLayout>
+                                    <HorizontalStackLayout Spacing="10">
+                                        <Button
+										Padding="3"
+									   HorizontalOptions="Center"
+									   VerticalOptions="Center"
+									  >
+                                            <Button.ImageSource>
+                                                <FontImageSource
+												Glyph="&#xf31c;"  
+												FontFamily="FontAwesome"
+												Size="15" />
+                                            </Button.ImageSource>
+                                        </Button>
+
+                                        <Label Text="{Binding WorkoutName}" FontSize="18" FontAttributes="Bold" />
+                                    </HorizontalStackLayout>
+
                                     <Label Text="{Binding Date, StringFormat='Date: {0:dd-MM-yyyy}'}" FontSize="14" TextColor="Gray" />
                                     <Label Text="{Binding Time, StringFormat='Time: {0:hh\\:mm}'}" FontSize="14" TextColor="Gray" />
-                                </VerticalStackLayout>
-                            </Border>
-                        </VerticalStackLayout>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </ScrollView>
+                                    </VerticalStackLayout>
+                                    <CollectionView  SelectionMode="None" Margin="0,0,0,10" ItemsSource="{Binding WorkoutSets}" IsVisible="{Binding IsVisible}" >
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate  x:DataType="models:WorkoutSetDTO">
+                                                <Border Style="{StaticResource BorderStyle1}">
+                                                    <StackLayout Orientation="Horizontal" Padding="15" Spacing="15">
+                                                        <Label Text="{Binding Reps, StringFormat='{0} reps'}" />
+                                                        <Label Text="{Binding Weight, StringFormat='{0} kg'}" />
+                                                        <Label Text="{Binding Exercise.Name}" />
+                                                        <Label Text="{Binding Exercise.Bodypart.Name, StringFormat='({0})'}" />
 
-    </Grid>
+                                                    </StackLayout>
+                                                </Border>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+
+                                    </CollectionView>
+                                </StackLayout>
+                                
+                            </Border>
+						</StackLayout>
+					</DataTemplate>
+				</CollectionView.ItemTemplate>
+			</CollectionView>
+		</ScrollView>
+
+	</Grid>
 </ContentPage>
