@@ -45,15 +45,17 @@
                                     <CollectionView  SelectionMode="None" Margin="0,0,0,10" ItemsSource="{Binding WorkoutSets}" IsVisible="{Binding IsVisible}" >
                                         <CollectionView.ItemTemplate>
                                             <DataTemplate  x:DataType="models:WorkoutSetDTO">
+                                                <VerticalStackLayout Padding="5">
                                                 <Border Style="{StaticResource BorderStyle1}">
-                                                    <StackLayout Orientation="Horizontal" Padding="15" Spacing="15">
+                                                    <HorizontalStackLayout Padding="15" Spacing="15">
                                                         <Label Text="{Binding Reps, StringFormat='{0} reps'}" />
                                                         <Label Text="{Binding Weight, StringFormat='{0} kg'}" />
                                                         <Label Text="{Binding Exercise.Name}" />
                                                         <Label Text="{Binding Exercise.Bodypart.Name, StringFormat='({0})'}" />
 
-                                                    </StackLayout>
+                                                    </HorizontalStackLayout>
                                                 </Border>
+                                                </VerticalStackLayout>
                                             </DataTemplate>
                                         </CollectionView.ItemTemplate>
 

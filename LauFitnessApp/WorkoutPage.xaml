@@ -72,19 +72,21 @@
                         <CollectionView  SelectionMode="None" Margin="0,0,0,10" ItemsSource="{Binding WorkoutSets}">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate  x:DataType="models:WorkoutSetDTO">
-                                <Border Style="{StaticResource BorderStyle1}">
-                                    <StackLayout Orientation="Horizontal" Padding="15" Spacing="15">
+                                <VerticalStackLayout Padding="5">
+                                    <Border Style="{StaticResource BorderStyle1}">
+                                            <HorizontalStackLayout Padding="15" Spacing="15">
                                     
-                                        <Button Text="&#xf068;" FontFamily="FontAwesome"   
-                                        Command="{Binding DeleteWorkoutSetCommand, Source={RelativeSource AncestorType={x:Type viewmodels:WorkoutViewModel}}, x:DataType=viewmodels:WorkoutViewModel}" 
-                                        CommandParameter="{Binding .}" />
-                                        <Label Text="{Binding Reps, StringFormat='{0} reps'}" />
-                                        <Label Text="{Binding Weight, StringFormat='{0} kg'}" />
-                                        <Label Text="{Binding Exercise.Name}" />
-                                        <Label Text="{Binding Exercise.Bodypart.Name, StringFormat='({0})'}" />
+                                                <Button Text="&#xf068;" FontFamily="FontAwesome"   
+                                                Command="{Binding DeleteWorkoutSetCommand, Source={RelativeSource AncestorType={x:Type viewmodels:WorkoutViewModel}}, x:DataType=viewmodels:WorkoutViewModel}" 
+                                                CommandParameter="{Binding .}" />
+                                                <Label Text="{Binding Reps, StringFormat='{0} reps'}" />
+                                                <Label Text="{Binding Weight, StringFormat='{0} kg'}" />
+                                                <Label Text="{Binding Exercise.Name}" />
+                                                <Label Text="{Binding Exercise.Bodypart.Name, StringFormat='({0})'}" />
                                   
-                                </StackLayout>
-                                </Border>
+                                        </HorizontalStackLayout>
+                                    </Border>
+                                </VerticalStackLayout>
                             </DataTemplate>
                             </CollectionView.ItemTemplate>
 
