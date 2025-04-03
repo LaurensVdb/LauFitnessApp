@@ -40,10 +40,24 @@ namespace LauFitnessApp.ViewModels
             await Shell.Current.GoToAsync(nameof(ExercisePage));
         }
 
+
+        [RelayCommand]
+        public async Task EditWorkout(WorkoutDTO workout)
+        {
+            workout.IsVisible = !workout.IsVisible;
+            var navigationParameter = new Dictionary<string, object>
+            {
+                { "workout", workout }
+            };
+            await Shell.Current.GoToAsync(nameof(WorkoutPage), navigationParameter);
+            //Shell.Current.CurrentItem = Shell.Current.CurrentItem.Items.FirstOrDefault(tab => tab.Title == "Workout");
+        }
+
         [RelayCommand]
         async Task StartWorkout()
         {
             await Shell.Current.GoToAsync(nameof(WorkoutPage));
+            Shell.Current.CurrentItem = Shell.Current.Items.FirstOrDefault(tab => tab.Title == "WorkoutPage");
         }
     }
 }

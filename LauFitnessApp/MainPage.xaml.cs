@@ -17,7 +17,7 @@ namespace LauFitnessApp
         {
             await mainViewModel.GetWorkouts();
             base.OnAppearing();
-   
+
         }
 
     }

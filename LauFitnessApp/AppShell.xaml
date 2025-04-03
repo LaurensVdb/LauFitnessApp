@@ -31,18 +31,9 @@
           ContentTemplate="{DataTemplate local:ExercisePage}" />
       
     </FlyoutItem>-->
-    <TabBar>
-        <Tab   Title="Main" Icon="{FontImageSource Color=LightBlue, FontFamily='FontAwesome', Glyph='&#xf015;'}">
-            <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
-        </Tab>
-        <Tab  Title="Exercise"
-         Icon="{FontImageSource Color=LightBlue,FontFamily='FontAwesome', Glyph='&#xf0ae;'}">
-            <ShellContent ContentTemplate="{DataTemplate local:ExercisePage}" />
-        </Tab>
-        <Tab  Title="Workout"
-                Icon="{FontImageSource Color=LightBlue,FontFamily='FontAwesome', Glyph='&#xf44b;'}">
-            <ShellContent ContentTemplate="{DataTemplate local:WorkoutPage}" />
-        </Tab>
-    </TabBar>
+
+    <ShellContent Title="Main"  ContentTemplate="{DataTemplate local:MainPage}" />
+    <ShellContent Title="Exercise"  ContentTemplate="{DataTemplate local:ExercisePage}" />
+    <ShellContent Title="Workout"  ContentTemplate="{DataTemplate local:WorkoutPage}" />
 
 </Shell>
