@@ -25,8 +25,11 @@
                                     <HorizontalStackLayout Spacing="10">
                                         <Button
 										Padding="3"
-									   HorizontalOptions="Center"
-									   VerticalOptions="Center"
+									    HorizontalOptions="Center"
+									    VerticalOptions="Center"
+                                        Command="{Binding EditWorkoutCommand, 
+                                        Source={RelativeSource AncestorType={x:Type viewmodels:MainViewModel}}, x:DataType=viewmodels:MainViewModel}"
+                                        CommandParameter="{Binding .}"
 									  >
                                             <Button.ImageSource>
                                                 <FontImageSource

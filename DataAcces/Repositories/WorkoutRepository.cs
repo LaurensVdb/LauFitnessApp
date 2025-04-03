@@ -33,7 +33,7 @@ namespace DataAcces.Repositories
         {
             foreach (var entry in workout.WorkoutSets)
             {
-                var existingExercise = databaseContext.Exercises.Local.First(e => e.Id == entry.Exercise.Id);
+                var existingExercise = databaseContext.Exercises.First(e => e.Id == entry.Exercise.Id);
                 entry.Exercise = existingExercise;
             }
 
@@ -47,7 +47,14 @@ namespace DataAcces.Repositories
             //databaseContext.Exercises.Entry(exercise).State= EntityState.Modified;
             //var existingWorkout=databaseContext.Workouts.Local.First(p=>p.Id==workout.Id);
             //existingWorkout = workout;
+            foreach (var entry in workout.WorkoutSets)
+            {
+                var existingExercise = databaseContext.Exercises.First(e => e.Id == entry.Exercise.Id);
+                entry.Exercise = existingExercise;
+            }
             databaseContext.Workouts.Update(workout);
+
+
         }
 
         public void RemoveWorkout(int id)

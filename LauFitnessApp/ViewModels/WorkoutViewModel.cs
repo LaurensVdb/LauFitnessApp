@@ -9,7 +9,7 @@ using System.Collections.ObjectModel;
 
 namespace LauFitnessApp.ViewModels
 {
-    public partial class WorkoutViewModel : ObservableObject
+    public partial class WorkoutViewModel : ObservableObject, IQueryAttributable
     {
         [ObservableProperty]
         ObservableCollection<ExerciseDTO> exercises;
@@ -83,53 +83,58 @@ namespace LauFitnessApp.ViewModels
         async Task SaveWorkout()
         {
             var isresult = await Shell.Current.DisplayAlert("workout", "Are you done training?", "Yes", "No");
+            var workoutSetsDb = mapper.Map<ObservableCollection<WorkoutSet>>(WorkoutSets);
+
 
             if (isresult)
             {
-
                 var validationresult = validator.Validate(SelectedWorkout);
 
                 if (validationresult.IsValid)
                 {
-                    var workout = mapper.Map<Workout>(SelectedWorkout);
-                    var workoutSets = mapper.Map<ObservableCollection<WorkoutSet>>(WorkoutSets);
-
-                    if (workout != null && workoutSets != null)
+                    Workout workoutDb = mapper.Map<Workout>(SelectedWorkout);
+                    if (SelectedWorkout.Id > 0)
                     {
-                        workout.WorkoutSets = workoutSets;
-                        if (workout.Id <= 0)
-                        {
+                        workoutDb = await workoutRepository.GetWorkout(SelectedWorkout.Id);
 
-                            await workoutRepository.AddWorkout(workout);
-
-                        }
-
-                        /*
-                        else
-                        {
-                            var workoutdb = await workoutRepository.GetWorkout(SelectedWorkout.Id);
-                            if (workoutdb != null)
-                            {
-                                mapper.Map(SelectedWorkout, workoutdb);
-
-                                workoutRepository.UpdateWorkout(workoutdb);
-                            }
-
-
-                        }
-                        */
-                        await workoutRepository.Save();
-                        SelectedWorkout.Id = workout.Id;
-                        await Shell.Current.GoToAsync(nameof(MainPage));
                     }
+                    mapper.Map(SelectedWorkout, workoutDb);
+                    workoutDb.WorkoutSets = workoutSetsDb;
+
+
+
+                    if (workoutDb.Id <= 0)
+                    {
+
+                        await workoutRepository.AddWorkout(workoutDb);
+
+                    }
+                    else
+                    {
+
+                        workoutRepository.UpdateWorkout(workoutDb);
+                    }
+                    await workoutRepository.Save();
+                    SelectedWorkout.Id = workoutDb.Id;
+                    await Shell.Current.GoToAsync(nameof(MainPage));
+
                 }
                 else
                 {
                     await showValidatorDisplay.ShowValidationAsync(validationresult, "workout");
                 }
 
-            }
 
+            }
+        }
+
+
+
+
+        public void ApplyQueryAttributes(IDictionary<string, object> query)
+        {
+            this.SelectedWorkout = (WorkoutDTO)query["workout"];
+            this.WorkoutSets = new ObservableCollection<WorkoutSetDTO>(this.SelectedWorkout.WorkoutSets);
         }
     }
 }
