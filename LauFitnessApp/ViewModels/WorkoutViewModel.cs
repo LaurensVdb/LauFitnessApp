@@ -1,8 +1,9 @@
-﻿using AutoMapper;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DataAcces.Entities;
 using DataAcces.Repositories;
+using ForgeMapperLibrary;
+using ForgeMapperLibrary.Interfaces;
 using LauFitnessApp.Models;
 using LauFitnessApp.Validators;
 using System.Collections.ObjectModel;
@@ -26,18 +27,20 @@ namespace LauFitnessApp.ViewModels
 
         IExerciseRepository exerciseRepository;
         IWorkoutRepository workoutRepository;
-        IMapper mapper;
+
         IShowValidatorDisplay showValidatorDisplay;
         WorkoutValidator validator;
         WorkoutSetValidator workoutSetValidator;
-        public WorkoutViewModel(IExerciseRepository exerciseRepository, IWorkoutRepository workoutRepository, IMapper mapper, IShowValidatorDisplay showValidatorDisplay, WorkoutValidator validator, WorkoutSetValidator workoutSetValidator)
+        IForgeMapper mapper;
+        public WorkoutViewModel(IExerciseRepository exerciseRepository, IWorkoutRepository workoutRepository, IShowValidatorDisplay showValidatorDisplay, WorkoutValidator validator, WorkoutSetValidator workoutSetValidator, IForgeMapper forgeMapper)
         {
             this.exerciseRepository = exerciseRepository;
             this.workoutRepository = workoutRepository;
-            this.mapper = mapper;
+
             this.showValidatorDisplay = showValidatorDisplay;
             this.workoutSetValidator = workoutSetValidator;
             this.validator = validator;
+            this.mapper = forgeMapper;
             Exercises = new ObservableCollection<ExerciseDTO>();
 
             SelectedWorkout = new WorkoutDTO();
@@ -52,7 +55,7 @@ namespace LauFitnessApp.ViewModels
         public async Task GetExercises()
         {
             List<Exercise> result = await exerciseRepository.GetExercises();
-            Exercises = mapper.Map<ObservableCollection<ExerciseDTO>>(result);
+            Exercises = result.MapCollection<ObservableCollection<ExerciseDTO>>();
         }
 
         [RelayCommand]
@@ -83,7 +86,7 @@ namespace LauFitnessApp.ViewModels
         async Task SaveWorkout()
         {
             var isresult = await Shell.Current.DisplayAlert("workout", "Are you done training?", "Yes", "No");
-            var workoutSetsDb = mapper.Map<ObservableCollection<WorkoutSet>>(WorkoutSets);
+            var workoutSetsDb = WorkoutSets.MapCollection<ObservableCollection<WorkoutSet>>();
 
 
             if (isresult)
@@ -92,31 +95,31 @@ namespace LauFitnessApp.ViewModels
 
                 if (validationresult.IsValid)
                 {
-                    Workout workoutDb = mapper.Map<Workout>(SelectedWorkout);
+                    Workout? workoutDb = mapper.CreateObject<Workout>(SelectedWorkout);
                     if (SelectedWorkout.Id > 0)
                     {
                         workoutDb = await workoutRepository.GetWorkout(SelectedWorkout.Id);
 
                     }
-                    mapper.Map(SelectedWorkout, workoutDb);
-                    workoutDb.WorkoutSets = workoutSetsDb;
-
-
-
-                    if (workoutDb.Id <= 0)
+                    if (workoutDb != null)
                     {
+                        workoutDb.WorkoutSets = workoutSetsDb;
 
-                        await workoutRepository.AddWorkout(workoutDb);
+                        if (workoutDb.Id <= 0)
+                        {
 
+                            await workoutRepository.AddWorkout(workoutDb);
+
+                        }
+                        else
+                        {
+
+                            workoutRepository.UpdateWorkout(workoutDb);
+                        }
+                        await workoutRepository.Save();
+                        SelectedWorkout.Id = workoutDb.Id;
+                        await Shell.Current.GoToAsync(nameof(MainPage));
                     }
-                    else
-                    {
-
-                        workoutRepository.UpdateWorkout(workoutDb);
-                    }
-                    await workoutRepository.Save();
-                    SelectedWorkout.Id = workoutDb.Id;
-                    await Shell.Current.GoToAsync(nameof(MainPage));
 
                 }
                 else

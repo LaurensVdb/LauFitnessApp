@@ -10,7 +10,7 @@ namespace LauFitnessApp.Validators
         public ExerciseValidator(IExerciseRepository repository)
         {
             _repository = repository;
-            RuleFor(p => p.Bodypart).NotEmpty().WithMessage("Bodypart is required!");
+            RuleFor(p => p.BodyPart).NotEmpty().WithMessage("Bodypart is required!");
             RuleFor(p => p.Name).NotEmpty().WithMessage("Exercise name is required!");
             RuleSet("Delete", () =>
             {
