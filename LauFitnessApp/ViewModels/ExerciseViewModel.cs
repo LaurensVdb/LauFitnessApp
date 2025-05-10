@@ -1,9 +1,10 @@
-﻿using AutoMapper;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DataAcces.Entities;
 using DataAcces.Repositories;
 using FluentValidation;
+using ForgeMapperLibrary;
+using ForgeMapperLibrary.Interfaces;
 using LauFitnessApp.Models;
 using LauFitnessApp.Validators;
 using System.Collections.ObjectModel;
@@ -18,25 +19,30 @@ namespace LauFitnessApp.ViewModels
         ObservableCollection<ExerciseDTO> exercises;
 
         [ObservableProperty]
-        ObservableCollection<BodypartDTO> bodyparts;
+        ObservableCollection<BodypartDTO> bodyParts;
 
 
         IExerciseRepository repository;
-        IMapper mapper;
+
         IShowValidatorDisplay showValidatorDisplay;
         ExerciseValidator validator;
 
         IWorkoutSetRepository workoutSetRepository;
-        public ExerciseViewModel(IExerciseRepository repository, IWorkoutSetRepository workoutSetRepository, IMapper mapper, IShowValidatorDisplay showValidatorDisplay, ExerciseValidator validator)
+
+        IForgeMapper forgeMapper;
+        public ExerciseViewModel(IExerciseRepository repository, IWorkoutSetRepository workoutSetRepository,
+            IShowValidatorDisplay showValidatorDisplay, ExerciseValidator validator,
+            IForgeMapper mapper)
         {
-            this.mapper = mapper;
+
             this.repository = repository;
             this.showValidatorDisplay = showValidatorDisplay;
             this.validator = validator;
             this.workoutSetRepository = workoutSetRepository;
+            this.forgeMapper = mapper;
             exercise = new ExerciseDTO();
             exercises = new ObservableCollection<ExerciseDTO>();
-            bodyparts = new ObservableCollection<BodypartDTO>();
+            bodyParts = new ObservableCollection<BodypartDTO>();
 
 
         }
@@ -46,8 +52,8 @@ namespace LauFitnessApp.ViewModels
             List<Exercise> result = await repository.GetExercises();
             List<Bodypart> result2 = await repository.GetBodyparts();
 
-            Exercises = mapper.Map<ObservableCollection<ExerciseDTO>>(result);
-            Bodyparts = mapper.Map<ObservableCollection<BodypartDTO>>(result2);
+            Exercises = result.MapCollection<ObservableCollection<ExerciseDTO>>();
+            BodyParts = result2.MapCollection<ObservableCollection<BodypartDTO>>(); ;
 
             // var result2 = mapper.Map<List<ExerciseDTO>>(result);
             // var ex = result2.FirstOrDefault();
@@ -73,7 +79,7 @@ namespace LauFitnessApp.ViewModels
                 //exerciseDB.BodyPart = Exercise.Bodypart;
                 //exerciseDB.Name = Exercise.Name;
 
-                mapper.Map(Exercise, exerciseDB);
+                forgeMapper.Map(Exercise, exerciseDB);
                 await repository.AddExercise(exerciseDB);
 
 

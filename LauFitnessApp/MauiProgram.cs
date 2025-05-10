@@ -2,7 +2,8 @@
 using DataAcces.DatabaseConfig;
 using DataAcces.Entities;
 using DataAcces.Repositories;
-using LauFitnessApp.MapperProfiles;
+using ForgeMapperLibrary;
+using ForgeMapperLibrary.Interfaces;
 using LauFitnessApp.Validators;
 using LauFitnessApp.ViewModels;
 using Microsoft.EntityFrameworkCore;
@@ -29,7 +30,7 @@ namespace LauFitnessApp
                 });
 
 
-            builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
+
             builder.Services.AddDbContext<DatabaseContext>(options =>
             {
                 var path = Path.Combine(FileSystem.AppDataDirectory, "laufitness2.db");
@@ -57,6 +58,7 @@ namespace LauFitnessApp
 
             }, ServiceLifetime.Singleton);
 
+            builder.Services.AddScoped<IForgeMapper, ForgeMapper>();
             builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
             builder.Services.AddTransient<IWorkoutRepository, WorkoutRepository>();
             builder.Services.AddTransient<IWorkoutSetRepository, WorkoutSetRepository>();

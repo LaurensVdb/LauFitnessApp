@@ -1,8 +1,8 @@
-﻿using AutoMapper;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DataAcces.Entities;
 using DataAcces.Repositories;
+using ForgeMapperLibrary;
 using LauFitnessApp.Models;
 using System.Collections.ObjectModel;
 
@@ -11,14 +11,14 @@ namespace LauFitnessApp.ViewModels
     public partial class MainViewModel : ObservableObject
     {
         IWorkoutRepository workoutRepository;
-        IMapper mapper;
+
 
         [ObservableProperty]
         ObservableCollection<WorkoutDTO> workouts;
-        public MainViewModel(IWorkoutRepository workoutRepository, IMapper mapper)
+        public MainViewModel(IWorkoutRepository workoutRepository)
         {
             this.workoutRepository = workoutRepository;
-            this.mapper = mapper;
+
             Workouts = new ObservableCollection<WorkoutDTO>();
 
         }
@@ -32,7 +32,7 @@ namespace LauFitnessApp.ViewModels
         public async Task GetWorkouts()
         {
             List<Workout> result = await workoutRepository.GetWorkoutsWithWorkoutSets();
-            Workouts = mapper.Map<ObservableCollection<WorkoutDTO>>(result);
+            Workouts = result.MapCollection<ObservableCollection<WorkoutDTO>>();
         }
         [RelayCommand]
         async Task ManageExercises()

@@ -10,6 +10,6 @@ namespace LauFitnessApp.Models
         public int id;
 
         [ObservableProperty]
-        public BodypartDTO bodypart;
+        public BodypartDTO bodyPart;
     }
 }
